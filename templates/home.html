@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your Name - Portfolio</title>
+  <title>jeremy - Portfolio</title>
   <style>
     * {
       margin: 0;
@@ -368,7 +369,7 @@
 <body>
   <header>
     <nav>
-      <h1>Your Name</h1>
+      <h1>JEREMY MUNGAI</h1>
       <ul>
         <li><a href="#hero">Home</a></li>
         <li><a href="#about">About Me</a></li>
@@ -382,19 +383,19 @@
 
   <section id="hero">
     <div id="hero-text">
-      <h1>Hello, I'm Your Name</h1>
+      <h1>Hello, I'm Jeremy</h1>
       <p>I am a <span id="typing">passionate developer.</span></p>
-      <a href="resume.pdf" download id="resume-btn" aria-label="Download Resume">Download Resume</a>
+      <a href="{% static 'pdf/pdf.pdf' %}" download id="resume-btn" aria-label="Download Resume">Download Resume</a>
 
       <div id="social-links" aria-label="Social Media Links">
-        <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://github.com/mungai614" target="_blank" aria-label="GitHub">GitHub<i class="fab fa-github"></i></a>
         <a href="https://linkedin.com/in/yourusername" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-        <a href="https://twitter.com/yourusername" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+
       </div>
     </div>
 
     <div id="hero-photo">
-      <img src="https://i.pravatar.cc/200" alt="Your Name Photo" />
+      <img src="{% static 'images/jeremy.jpg' %}" alt=" Photo" />
     </div>
   </section>
 
@@ -413,15 +414,18 @@
     <div class="project-list">
       <div class="project-card">
         <h3>Project One</h3>
-        <p>A responsive web app built with React and Firebase.</p>
+        <p>A Restaurant management system, I implemented both frontend and backend and together with its database .</p>
       </div>
       <div class="project-card">
         <h3>Project Two</h3>
-        <p>JavaScript game featuring smooth animations and user interaction.</p>
+        <p>An online shopping website for cloths. I implemented both frontend and backend and together with its database .</p>
       </div>
       <div class="project-card">
         <h3>Project Three</h3>
-        <p>Portfolio website showcasing my skills and projects.</p>
+        <p>A Hospital management system. I implemented both frontend and backend and together with its database.
+            <br>
+           ...And many others...
+        </p>
       </div>
     </div>
   </section>
@@ -437,6 +441,7 @@
       <li>Python</li>
       <li>Django</li>
       <li>SQL</li>
+        <li>Kotlin</li>
     </ul>
   </section>
 
@@ -451,8 +456,8 @@
   <section id="certificate">
   <h2>Certificate</h2>
   <div class="certificate-container">
-    <img src="certificate-image.jpg" alt="Certificate of Completion" />
-    <a href="certificate.pdf" download class="certificate-btn" aria-label="Download Certificate">Download Certificate</a>
+    <img src="{% static 'images\jeremy.jpg' %}" alt="Certificate of Completion" />
+    <a href="{% static 'images\jeremy.jpg' %}" download class="certificate-btn" aria-label="Download Certificate">Download Certificate</a>
   </div>
 </section>
 
@@ -463,19 +468,21 @@
     <div class="contact-info">
       <div>
         <strong>Address</strong>
-        <p>Nairobi, Kenya</p>
+        <p>Kisumu, Kenya</p>
       </div>
       <div>
         <strong>Call Me</strong>
-        <p>+254 712 345678</p>
+        <p>+254 720597285</p>
       </div>
       <div>
         <strong>Email Me</strong>
-        <p>yourname@example.com</p>
+        <p>mungajeremia886@gmail.com</p>
       </div>
     </div>
 
-    <form id="contact-form" aria-label="Contact form">
+    <form id="contact-form" method="post" action="{% url 'contact' %}">
+
+        {% csrf_token %}
       <label for="name">Name</label>
       <input type="text" id="name" name="name" placeholder="Your Name" required />
 
@@ -491,7 +498,7 @@
 </section>
 
   <footer>
-    <p>&copy; 2025 Your Name. All rights reserved.</p>
+    <p>&copy; 2025 Jeremy Mungai. All rights reserved.</p>
   </footer>
 
   <script>
@@ -521,36 +528,6 @@ document.querySelectorAll('nav ul li a').forEach(link => {
   });
 });
 
-const form = document.getElementById('contact-form');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const data = {
-    name: form.name.value,
-    email: form.email.value,
-    message: form.message.value,
-  };
-
-  try {
-    const response = await fetch('http://localhost:5000/contact', {  // Flask backend port 5000
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    const result = await response.json();
-
-    if (response.ok) {
-      alert(result.message);
-      form.reset();
-    } else {
-      alert(result.error || 'Failed to send message');
-    }
-  } catch (error) {
-    alert('Error sending message: ' + error.message);
-  }
-});
       </script>
 </body>
 </html>

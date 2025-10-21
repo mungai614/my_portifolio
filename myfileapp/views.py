@@ -7,30 +7,29 @@ def home(request):
 # views.py in your Django app
 
 from django.core.mail import send_mail
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
-
-@csrf_exempt  # disable CSRF for simplicity; better to use tokens or allow from frontend properly
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.conf import settings
+from django.contrib import messages
+from django.shortcuts import redirect
 def contact(request):
     if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message_body = request.POST.get('message')
+
+        # Compose email content
+        subject = "New Contact Form Submission"
+        message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message_body}"
+        from_email = settings.DEFAULT_FROM_EMAIL  # Usually same as EMAIL_HOST_USER
+        recipient_list = ['jeremynjango2@gmail.com']  # Change to your real email
+
+        # Send the email
         try:
-            data = json.loads(request.body)
-            name = data.get('name')
-            email = data.get('email')
-            message_body = data.get('message')
-
-            if not name or not email or not message_body:
-                return JsonResponse({'error': 'Please fill in all fields.'}, status=400)
-
-            subject = "New Portfolio Contact Form Message"
-            message = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message_body}"
-            recipient_list = ['your-email@gmail.com']  # your email here
-
-            send_mail(subject, message, email, recipient_list)
-            return JsonResponse({'message': 'Message sent successfully!'})
+            send_mail(subject, message, from_email, recipient_list)
+            messages.success(request, f"Thanks {name}, your message has been sent successfully.")
         except Exception as e:
-            print(f"Error sending email: {e}")
-            return JsonResponse({'error': 'Failed to send email.'}, status=500)
-    else:
-        return JsonResponse({'error': 'Invalid request method.'}, status=405)
+            messages.error(request, f"Sorry, an error occurred: {e}")
+
+        return redirect('home')
+
